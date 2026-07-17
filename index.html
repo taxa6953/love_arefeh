@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>برای عارفه ❤️</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    background:#000;
+    position:relative;
+    background:linear-gradient(
+    to bottom,
+    #1f1a12,
+    #2d2416,
+    #40311a
+);
+}
+
+/* عکس زمینه */
+.bg{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+}
+
+/* المان های کلیک شونده */
+.hotspot{
+    position:absolute;
+    cursor:pointer;
+    user-select:none;
+    transition:.3s;
+}
+
+.hotspot:hover{
+    transform:scale(1.15);
+}
+
+/* موزیک */
+#musicBtn{
+    top:15%;
+    right:4%;
+    font-size:25px;
+    opacity:.8;
+    filter: brightness(50%);
+}
+
+/* پاکت نامه */
+#letterBtn{
+    position:absolute;
+
+    bottom:25%;
+    left:46%;
+
+    width:120px;
+    height:120px;
+
+    background:transparent;
+
+    opacity:0;
+    cursor:pointer;
+}
+
+/* پنجره شناور */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
+    backdrop-filter:blur(8px);
+    z-index:999;
+}
+
+.modal-content{
+    width:90%;
+    max-width:650px;
+    max-height:80vh;
+    overflow-y:auto;
+
+    background:white;
+    color:#333;
+
+    margin:10vh auto;
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:0 0 30px rgba(0,0,0,.3);
+}
+
+.modal-content h2{
+    margin-bottom:20px;
+}
+
+.modal-content p{
+    line-height:2;
+    font-size:18px;
+}
+
+.close{
+    float:left;
+    font-size:35px;
+    cursor:pointer;
+    color:#888;
+}
+</style>
+</head>
+
+<body>
+
+<img src="07_17_2026_Zawa.jpeg" class="bg">
+
+
+<audio id="bgMusic" preload="auto">
+    <source src="Telegram _ icyRemix – Bala Mala Mix.mp3" type="audio/mpeg">
+</audio>
+<!-- پنجره نامه -->
+    <div id="letterBtn" class="hotspot"></div>
+<div id="modal" class="modal">
+    <div class="modal-content">
+
+        <span class="close" id="closeBtn">&times;</span>
+
+        <h2>برای عارفه ❤️</h2>
+
+        <p>
+            شدی بال و پرم نور چش من تاج سرم<br><br>
+
+            نمیپره عطرت از سرم تویی دلبرم<br><br>
+
+            تو کارتو بلدی دیوونه ات شدم من بعد از این<br><br>
+
+            چشات قفلی داره پدرم در اومد لعنتی<br><br>
+
+            جز بغلت من جایی و آدرس ندارم<br><br>
+
+            به هیچکسی حس ندارم<br><br>
+
+            قلبم دیگه نصف برا تو نصف برا من<br><br>
+
+            بلا ملا ای طلا ملا نباشی دل میره به فنا<br><br>
+
+            شبا شبا هی هواییتم نزاری هیچ وقت تنها تنها<br><br>
+
+            تو کارتو بلدی دیوونه ات شدم من بعد از این<br><br>
+
+            چشات قفلی داره پدرم در اومد لعنتی<br><br>
+
+            تو کارتو بلدی دیوونه ات شدم من بعد از این<br><br>
+
+            چشات قفلی داره پدرم در اومد عوضی<br><br>
+
+            بلا ملا ای طلا ملا نباشی دل میره به فنا<br><br>
+
+            شبا شبا هی هواییتم نزاری هیچ وقت تنها تنها<br><br>
+
+            قلبم دیگه نصف برا تو نصف برا من
+        </p>
+
+    </div>
+</div>
+
+<script>
+
+const music = document.getElementById("bgMusic");
+
+// پیش بارگذاری فایل
+music.load();
+
+const modal = document.getElementById("modal");
+const letterBtn = document.getElementById("letterBtn");
+const closeBtn = document.getElementById("closeBtn");
+
+    let musicReady = false;
+
+music.addEventListener("canplaythrough", () => {
+    musicReady = true;
+    console.log("Music Ready");
+});
+
+// شروع دانلود از لحظه ورود به صفحه
+window.addEventListener("load", () => {
+    music.load();
+});
+    
+letterBtn.onclick = async () => {
+
+    if(!musicReady){
+        console.log("در حال آماده سازی موزیک...");
+    }
+
+    // موزیک را از ابتدا اجرا کن
+    music.pause();
+    music.currentTime = 0;
+
+    try{
+        await music.play();
+
+        // بعد از شروع موزیک نامه باز شود
+        modal.style.display = "block";
+
+    }catch(err){
+        console.log(err);
+
+        // اگر خطا داد باز هم نامه باز شود
+        modal.style.display = "block";
+    }
+};
+function closeLetter(){
+
+    modal.style.display = "none";
+
+    music.pause();
+    music.currentTime = 0;
+}
+
+closeBtn.onclick = closeLetter;
+
+window.onclick = (e) => {
+    if(e.target === modal){
+        closeLetter();
+    }
+};
+
+</script>
+
+</body>
+  </html>
