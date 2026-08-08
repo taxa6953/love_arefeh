@@ -101,7 +101,8 @@ startBtn.addEventListener("click",()=>{
     currentCard = 0;
 
     showNextMemory();
-
+const loveScene =
+document.getElementById("loveScene");
 });
 
 function showNextMemory(){
@@ -110,21 +111,23 @@ function showNextMemory(){
         card.classList.remove("active");
     });
 
+    cards[currentCard].classList.add("active");
+
+    currentCard++;
+
     if(currentCard < cards.length){
-
-        cards[currentCard].classList.add("active");
-
-        currentCard++;
 
         setTimeout(showNextMemory,5000);
 
     }else{
 
-        memories.style.display = "none";
+        setTimeout(()=>{
 
-        if(loveScene){
+            memories.style.display = "none";
+
             loveScene.style.display = "flex";
-        }
+
+        },5000);
 
     }
 
