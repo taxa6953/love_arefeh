@@ -23,12 +23,6 @@ setTimeout(writeText,70);
 
 writeText();
 
-document
-.getElementById("startBtn")
-.addEventListener("click",()=>{
-
-alert("مرحله دوم آماده می‌شود ❤️");
-
 });
 const heartsContainer =
 document.querySelector(".floating-hearts");
