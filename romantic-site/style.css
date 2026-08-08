@@ -107,10 +107,17 @@ body::before{
 
 .heart{
     position:absolute;
-    bottom:-50px;
-    font-size:20px;
+    bottom:-80px;
     animation:floatUp linear forwards;
     opacity:.8;
+    pointer-events:none;
+}
+
+.heart img{
+    display:block;
+    width:30px;
+    height:30px;
+    object-fit:contain;
 }
 
 @keyframes floatUp{
