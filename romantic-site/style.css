@@ -349,3 +349,10 @@ transform:translateY(0);
     vertical-align: -0.15em;
     display: inline-block;
 }
+.heart-image {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
