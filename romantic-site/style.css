@@ -5,6 +5,7 @@
     font-family:'Vazirmatn',sans-serif;
 }
 
+
 body{
     height:100vh;
     overflow:hidden;
@@ -13,7 +14,7 @@ body{
     justify-content:center;
     align-items:center;
 
-   background-image:url('../romantic-site/IMG_6025.jpeg');
+    background-image:url('../romantic-site/IMG_6025.jpeg');
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
@@ -22,16 +23,24 @@ body{
     position:relative;
 }
 
-/* لایه تیره روی عکس برای خوانایی متن */
+
+/* لایه تیره روی عکس */
+
 body::before{
     content:'';
     position:fixed;
     inset:0;
+
     background:rgba(0,0,0,.25);
+
     z-index:1;
 }
 
-/* باکس اصلی */
+
+/* =========================
+   باکس اصلی
+========================= */
+
 .glass-box{
     width:90%;
     max-width:700px;
@@ -52,21 +61,34 @@ body::before{
     box-shadow:0 8px 32px rgba(0,0,0,.2);
 
     position:relative;
+
     z-index:10;
 
     animation:showBox 1.5s ease;
 }
 
-/* متن تایپی */
+
+/* =========================
+   متن تایپی
+========================= */
+
 #typing{
     color:white;
+
     font-size:2rem;
+
     line-height:2;
+
     min-height:150px;
+
     text-shadow:0 2px 10px rgba(0,0,0,.4);
 }
 
-/* دکمه */
+
+/* =========================
+   دکمه شروع
+========================= */
+
 #startBtn{
     margin-top:30px;
 
@@ -89,6 +111,7 @@ body::before{
     transition:.3s;
 }
 
+
 #startBtn:hover{
     transform:scale(1.08);
 
@@ -96,29 +119,67 @@ body::before{
     0 0 20px rgba(255,255,255,.8);
 }
 
-/* قلب‌های شناور */
+
+/* =========================
+   قلب داخل دکمه
+========================= */
+
+.button-heart{
+    width:1em;
+    height:1em;
+
+    object-fit:contain;
+
+    display:inline-block;
+
+    vertical-align:-0.12em;
+
+    margin:0;
+    padding:0;
+}
+
+
+/* =========================
+   قلب‌های شناور
+========================= */
+
 .floating-hearts{
     position:fixed;
+
     inset:0;
+
     overflow:hidden;
+
     pointer-events:none;
+
     z-index:2;
 }
 
+
 .heart{
     position:absolute;
-    bottom:-80px;
+
+    bottom:-60px;
+
     animation:floatUp linear forwards;
+
     opacity:.8;
+
     pointer-events:none;
 }
 
+
 .heart img{
     display:block;
-    width:30px;
-    height:30px;
+
+    width:24px;
+    height:24px;
+
     object-fit:contain;
 }
+
+
+/* حرکت قلب‌ها به سمت بالا */
 
 @keyframes floatUp{
 
@@ -126,159 +187,216 @@ body::before{
         transform:
         translateY(0)
         rotate(0deg);
+
         opacity:0;
     }
+
+
+    15%{
+        opacity:.8;
+    }
+
 
     20%{
         opacity:1;
     }
 
+
     100%{
         transform:
         translateY(-120vh)
         rotate(360deg);
+
         opacity:0;
     }
 
 }
 
-/* ستاره‌ها */
+
+/* =========================
+   ستاره‌ها
+========================= */
+
 .stars{
     position:fixed;
+
     inset:0;
+
     pointer-events:none;
+
     z-index:2;
 }
 
+
 .star{
     position:absolute;
+
     width:3px;
     height:3px;
+
     background:white;
+
     border-radius:50%;
+
     animation:twinkle 2s infinite;
 }
+
 
 @keyframes twinkle{
 
     0%,100%{
         opacity:.2;
+
         transform:scale(1);
     }
 
+
     50%{
         opacity:1;
+
         transform:scale(2);
     }
 
 }
 
-/* انیمیشن ورود باکس */
+
+/* =========================
+   انیمیشن ورود باکس
+========================= */
+
 @keyframes showBox{
 
     from{
         opacity:0;
+
         transform:
         translateY(50px)
         scale(.9);
     }
 
+
     to{
         opacity:1;
+
         transform:
         translateY(0)
         scale(1);
     }
 
 }
+
+
+/* =========================
+   خاطرات
+========================= */
+
 .memories{
 
-position:fixed;
+    position:fixed;
 
-inset:0;
+    inset:0;
 
-display:none;
+    display:none;
 
-justify-content:center;
-align-items:center;
+    justify-content:center;
 
-z-index:50;
+    align-items:center;
 
+    z-index:50;
 }
+
 
 .memory-card{
 
-width:90%;
-max-width:700px;
+    width:90%;
 
-background:rgba(255,255,255,.15);
+    max-width:700px;
 
-backdrop-filter:blur(20px);
+    background:rgba(255,255,255,.15);
 
-border-radius:30px;
+    backdrop-filter:blur(20px);
 
-padding:25px;
+    border-radius:30px;
 
-text-align:center;
+    padding:25px;
 
-display:none;
+    text-align:center;
 
-animation:showMemory 1s ease;
+    display:none;
+
+    animation:showMemory 1s ease;
 }
+
 
 .memory-card.active{
-display:block;
+    display:block;
 }
+
 
 .memory-card img{
 
-width:100%;
+    width:100%;
 
-height:450px;
+    height:450px;
 
-object-fit:cover;
+    object-fit:cover;
 
-border-radius:20px;
+    border-radius:20px;
 
-margin-bottom:20px;
+    margin-bottom:20px;
 }
+
 
 .memory-card h2{
 
-color:white;
+    color:white;
 
-margin-bottom:15px;
+    margin-bottom:15px;
 }
+
 
 .memory-card p{
 
-color:white;
+    color:white;
 
-line-height:2;
+    line-height:2;
 }
+
 
 @keyframes showMemory{
 
-from{
-opacity:0;
-transform:translateY(40px);
+    from{
+        opacity:0;
+
+        transform:translateY(40px);
+    }
+
+
+    to{
+        opacity:1;
+
+        transform:translateY(0);
+    }
+
 }
 
-to{
-opacity:1;
-transform:translateY(0);
-}
 
-}
+/* =========================
+   صحنه نهایی
+========================= */
+
 .love-scene{
 
     position:fixed;
+
     inset:0;
 
     display:none;
 
     flex-direction:column;
+
     justify-content:center;
+
     align-items:center;
 
     background:rgba(0,0,0,.65);
@@ -286,13 +404,37 @@ transform:translateY(0);
     z-index:100;
 }
 
+
+/* قلب بزرگ
+   قبلاً 120px بود
+   الان 60px شده
+*/
+
 .big-heart{
 
-    font-size:120px;
+    animation:pulseHeart 1.5s infinite;
 
-    animation:
-    pulseHeart 1.5s infinite;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 }
+
+
+.big-heart img{
+
+    width:60px;
+
+    height:60px;
+
+    object-fit:contain;
+
+    display:block;
+}
+
+
+/* انیمیشن تپش */
 
 @keyframes pulseHeart{
 
@@ -300,15 +442,22 @@ transform:translateY(0);
         transform:scale(1);
     }
 
+
     50%{
         transform:scale(1.2);
     }
+
 
     100%{
         transform:scale(1);
     }
 
 }
+
+
+/* =========================
+   متن نهایی
+========================= */
 
 .love-text{
 
@@ -319,6 +468,7 @@ transform:translateY(0);
     margin-top:20px;
 }
 
+
 .love-text h1{
 
     margin-bottom:15px;
@@ -326,10 +476,16 @@ transform:translateY(0);
     font-size:2rem;
 }
 
+
 .love-text h2{
 
     font-size:1.5rem;
 }
+
+
+/* =========================
+   دکمه ادامه
+========================= */
 
 #continueBtn{
 
@@ -348,20 +504,4 @@ transform:translateY(0);
     font-size:1.1rem;
 
     cursor:pointer;
-}
-.button-heart {
-    width: 1em;
-    height: 1em;
-    object-fit: contain;
-    display: inline-block;
-    vertical-align: -0.12em;
-    margin: 0;
-    padding: 0;
-}
-.heart-image {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-    display: inline-block;
-    vertical-align: middle;
 }
