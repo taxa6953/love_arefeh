@@ -14,7 +14,7 @@ body{
     justify-content:center;
     align-items:center;
 
-    background-image:url('romantic-site/IMG_6025.jpeg');
+    background-image:url('../romantic-site/IMG_6025.jpeg');
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
