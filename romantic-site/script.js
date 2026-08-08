@@ -87,6 +87,9 @@ document.getElementById("memories");
 const cards =
 document.querySelectorAll(".memory-card");
 
+const loveScene =
+document.getElementById("loveScene");
+
 let currentCard = 0;
 
 startBtn.addEventListener("click",()=>{
@@ -95,40 +98,34 @@ startBtn.addEventListener("click",()=>{
 
     memories.style.display = "flex";
 
+    currentCard = 0;
+
     showNextMemory();
 
 });
 
 function showNextMemory(){
 
-    function showNextMemory(){
-
     cards.forEach(card=>{
         card.classList.remove("active");
     });
 
-    cards[currentCard].classList.add("active");
-
-    currentCard++;
-
     if(currentCard < cards.length){
+
+        cards[currentCard].classList.add("active");
+
+        currentCard++;
 
         setTimeout(showNextMemory,5000);
 
     }else{
 
-        setTimeout(()=>{
+        memories.style.display = "none";
 
-            memories.style.display = "none";
-
+        if(loveScene){
             loveScene.style.display = "flex";
-
-        },5000);
+        }
 
     }
 
 }
-
-}
-const loveScene =
-document.getElementById("loveScene");
