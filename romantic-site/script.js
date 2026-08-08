@@ -101,6 +101,8 @@ startBtn.addEventListener("click",()=>{
 
 function showNextMemory(){
 
+    function showNextMemory(){
+
     cards.forEach(card=>{
         card.classList.remove("active");
     });
@@ -113,6 +115,20 @@ function showNextMemory(){
 
         setTimeout(showNextMemory,5000);
 
+    }else{
+
+        setTimeout(()=>{
+
+            memories.style.display = "none";
+
+            loveScene.style.display = "flex";
+
+        },5000);
+
     }
 
 }
+
+}
+const loveScene =
+document.getElementById("loveScene");
