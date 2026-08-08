@@ -40,8 +40,11 @@ heartImage.src = "../romantic-site/IMG_6026.png";
 heart.style.left =
 Math.random()*100+"vw";
 
-heart.style.fontSize =
-(Math.random()*25+15)+"px";
+heartImage.style.width =
+(Math.random()*15+20)+"px";
+
+heartImage.style.height =
+"auto";
 
 heart.style.animationDuration =
 (Math.random()*8+6)+"s";
