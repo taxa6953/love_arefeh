@@ -342,3 +342,10 @@ transform:translateY(0);
 
     cursor:pointer;
 }
+.button-heart {
+    width: 1em;
+    height: 1em;
+    object-fit: contain;
+    vertical-align: -0.15em;
+    display: inline-block;
+}
