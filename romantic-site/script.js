@@ -23,7 +23,6 @@ setTimeout(writeText,70);
 
 writeText();
 
-});
 const heartsContainer =
 document.querySelector(".floating-hearts");
 
