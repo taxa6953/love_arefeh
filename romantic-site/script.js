@@ -82,3 +82,44 @@ Math.random()*2+"s";
 starsContainer.appendChild(star);
 
 }
+const startBtn =
+document.getElementById("startBtn");
+
+const glassBox =
+document.querySelector(".glass-box");
+
+const memories =
+document.getElementById("memories");
+
+const cards =
+document.querySelectorAll(".memory-card");
+
+let currentCard = 0;
+
+startBtn.addEventListener("click",()=>{
+
+    glassBox.style.display = "none";
+
+    memories.style.display = "flex";
+
+    showNextMemory();
+
+});
+
+function showNextMemory(){
+
+    cards.forEach(card=>{
+        card.classList.remove("active");
+    });
+
+    cards[currentCard].classList.add("active");
+
+    currentCard++;
+
+    if(currentCard < cards.length){
+
+        setTimeout(showNextMemory,5000);
+
+    }
+
+}
