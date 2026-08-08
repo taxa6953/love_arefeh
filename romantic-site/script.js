@@ -30,3 +30,55 @@ document
 alert("مرحله دوم آماده می‌شود ❤️");
 
 });
+const heartsContainer =
+document.querySelector(".floating-hearts");
+
+function createHeart(){
+
+const heart =
+document.createElement("div");
+
+heart.classList.add("heart");
+
+heart.innerHTML = "❤️";
+
+heart.style.left =
+Math.random()*100+"vw";
+
+heart.style.fontSize =
+(Math.random()*25+15)+"px";
+
+heart.style.animationDuration =
+(Math.random()*8+6)+"s";
+
+heartsContainer.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},15000);
+
+}
+
+setInterval(createHeart,400);
+const starsContainer =
+document.querySelector(".stars");
+
+for(let i=0;i<80;i++){
+
+const star =
+document.createElement("div");
+
+star.classList.add("star");
+
+star.style.left =
+Math.random()*100+"vw";
+
+star.style.top =
+Math.random()*100+"vh";
+
+star.style.animationDelay =
+Math.random()*2+"s";
+
+starsContainer.appendChild(star);
+
+}
