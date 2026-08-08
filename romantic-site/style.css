@@ -1,202 +1,186 @@
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Vazirmatn',sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Vazirmatn',sans-serif;
 }
 
 body{
-height:100vh;
-overflow:hidden;
+    height:100vh;
+    overflow:hidden;
 
-display:flex;
-justify-content:center;
-align-items:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-background-image:url('../romantic-site/IMG_6025.jpeg');
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-background-attachment:fixed;
+   background-image:url('../romantic-site/IMG_6025.jpeg');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+
+    position:relative;
 }
+
+/* لایه تیره روی عکس برای خوانایی متن */
 body::before{
-content:'';
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.25);
-z-index:-1;
+    content:'';
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.25);
+    z-index:1;
 }
 
-background:
-linear-gradient(
-135deg,
-#ff9ec4,
-#ff6fae,
-#9f6fff,
-#6f8dff
-);
-
-background-size:400% 400%;
-
-animation:bgMove 12s ease infinite;
-}
-
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
+/* باکس اصلی */
 .glass-box{
+    width:90%;
+    max-width:700px;
 
-width:90%;
-max-width:700px;
+    padding:50px;
 
-padding:50px;
+    text-align:center;
 
-text-align:center;
+    background:rgba(255,255,255,.15);
 
-background:rgba(255,255,255,.15);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
 
-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.2);
 
-border:1px solid rgba(255,255,255,.2);
+    border-radius:30px;
 
-border-radius:30px;
+    box-shadow:0 8px 32px rgba(0,0,0,.2);
 
-box-shadow:
-0 8px 32px rgba(0,0,0,.2);
+    position:relative;
+    z-index:10;
+
+    animation:showBox 1.5s ease;
 }
 
+/* متن تایپی */
 #typing{
-color:white;
-font-size:2rem;
-line-height:2;
-min-height:150px;
+    color:white;
+    font-size:2rem;
+    line-height:2;
+    min-height:150px;
+    text-shadow:0 2px 10px rgba(0,0,0,.4);
 }
 
+/* دکمه */
 #startBtn{
+    margin-top:30px;
 
-margin-top:30px;
+    padding:15px 35px;
 
-padding:15px 35px;
+    border:none;
 
-border:none;
+    border-radius:50px;
 
-border-radius:50px;
+    font-size:1.1rem;
 
-font-size:1.1rem;
+    cursor:pointer;
 
-cursor:pointer;
+    background:white;
 
-background:white;
+    color:#ff3f8e;
 
-color:#ff3f8e;
+    font-weight:bold;
 
-font-weight:bold;
-
-transition:.3s;
+    transition:.3s;
 }
 
 #startBtn:hover{
+    transform:scale(1.08);
 
-transform:scale(1.08);
-
-box-shadow:
-0 0 20px rgba(255,255,255,.8);
+    box-shadow:
+    0 0 20px rgba(255,255,255,.8);
 }
+
+/* قلب‌های شناور */
 .floating-hearts{
-position:fixed;
-inset:0;
-overflow:hidden;
-pointer-events:none;
-z-index:0;
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:2;
 }
 
 .heart{
-position:absolute;
-bottom:-50px;
-font-size:20px;
-animation:floatUp linear forwards;
-opacity:.8;
+    position:absolute;
+    bottom:-50px;
+    font-size:20px;
+    animation:floatUp linear forwards;
+    opacity:.8;
 }
 
 @keyframes floatUp{
 
-0%{
-transform:
-translateY(0)
-rotate(0deg);
-opacity:0;
+    0%{
+        transform:
+        translateY(0)
+        rotate(0deg);
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    100%{
+        transform:
+        translateY(-120vh)
+        rotate(360deg);
+        opacity:0;
+    }
+
 }
 
-20%{
-opacity:1;
-}
-
-100%{
-transform:
-translateY(-120vh)
-rotate(360deg);
-opacity:0;
-}
-
-}
-
+/* ستاره‌ها */
 .stars{
-position:fixed;
-inset:0;
-pointer-events:none;
-z-index:0;
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
 }
 
 .star{
-position:absolute;
-width:3px;
-height:3px;
-background:white;
-border-radius:50%;
-animation:twinkle 2s infinite;
+    position:absolute;
+    width:3px;
+    height:3px;
+    background:white;
+    border-radius:50%;
+    animation:twinkle 2s infinite;
 }
 
 @keyframes twinkle{
 
-0%,100%{
-opacity:.2;
-transform:scale(1);
+    0%,100%{
+        opacity:.2;
+        transform:scale(1);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(2);
+    }
+
 }
 
-50%{
-opacity:1;
-transform:scale(2);
-}
-
-}
-
-.glass-box{
-position:relative;
-z-index:10;
-}
-.glass-box{
-
-animation:
-showBox 1.5s ease;
-}
-
+/* انیمیشن ورود باکس */
 @keyframes showBox{
 
-from{
-opacity:0;
-transform:
-translateY(50px)
-scale(.9);
-}
+    from{
+        opacity:0;
+        transform:
+        translateY(50px)
+        scale(.9);
+    }
 
-to{
-opacity:1;
-transform:
-translateY(0)
-scale(1);
-}
+    to{
+        opacity:1;
+        transform:
+        translateY(0)
+        scale(1);
+    }
 
 }
