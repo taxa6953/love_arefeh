@@ -33,7 +33,9 @@ document.createElement("div");
 
 heart.classList.add("heart");
 
-heart.innerHTML = "❤️";
+heartImage.src = "../romantic-site/IMG_6026.png";
+
+    heartImage.alt = "قلب";
 
 heart.style.left =
 Math.random()*100+"vw";
@@ -101,8 +103,6 @@ startBtn.addEventListener("click",()=>{
     currentCard = 0;
 
     showNextMemory();
-const loveScene =
-document.getElementById("loveScene");
 });
 
 function showNextMemory(){
