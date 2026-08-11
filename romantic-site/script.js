@@ -194,12 +194,12 @@ startBtn.addEventListener("click",()=>{
     glassBox.style.display =
     "none";
 
-
     heartGame.style.display =
-"flex";
+    "flex";
 
-startHeartGame();
+    startHeartGame();
 
+});
     showNextMemory();
 
 });
@@ -212,24 +212,34 @@ startHeartGame();
 function showNextMemory(){
 
     cards.forEach(card=>{
-
         card.classList.remove("active");
-
     });
 
+    if(!cards[currentCard]){
+        return;
+    }
 
     cards[currentCard].classList.add("active");
 
-
     currentCard++;
-
 
     if(currentCard < cards.length){
 
-        setTimeout(
-            showNextMemory,
-            5000
-        );
+        setTimeout(showNextMemory,5000);
+
+    }else{
+
+        setTimeout(()=>{
+
+            memories.style.display = "none";
+
+            loveScene.style.display = "flex";
+
+        },5000);
+
+    }
+
+}
 
     }else{
 
