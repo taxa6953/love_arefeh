@@ -177,7 +177,13 @@ document.getElementById("loveScene");
 
 
 let currentCard = 0;
+const heartGame =
+document.getElementById("heartGame");
 
+const scoreText =
+document.getElementById("score");
+
+let collectedHearts = 0;
 
 // ===============================
 // شروع سفر
