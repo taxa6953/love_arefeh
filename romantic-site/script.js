@@ -205,7 +205,7 @@ function showNextMemory(){
 
             loveScene.style.display =
             "flex";
-
+            createGalaxyHeart();
         },5000);
 
     }
