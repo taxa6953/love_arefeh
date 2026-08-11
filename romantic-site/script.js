@@ -195,12 +195,10 @@ startBtn.addEventListener("click",()=>{
     "none";
 
 
-    memories.style.display =
-    "flex";
+    heartGame.style.display =
+"flex";
 
-
-    currentCard = 0;
-
+startHeartGame();
 
     showNextMemory();
 
