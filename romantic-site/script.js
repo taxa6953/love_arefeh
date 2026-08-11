@@ -146,7 +146,6 @@ const cards =
 document.querySelectorAll(".memory-card");
 
 const loveScene =
-const loveScene =
 document.getElementById("loveScene");
 
 const bigHeart =
