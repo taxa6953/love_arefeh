@@ -280,21 +280,31 @@ function createGalaxyHeart(){
 
     const galaxy =
     document.getElementById("galaxyHeart");
+
     galaxy.style.display = "block";
     galaxy.innerHTML = "";
 
-    for(let i=0;i<150;i++){
+    for(let i=0;i<200;i++){
 
         const star =
         document.createElement("div");
 
         star.classList.add("galaxy-star");
 
+        // شروع از جای تصادفی
+        star.style.left =
+        Math.random()*500 + "px";
+
+        star.style.top =
+        Math.random()*450 + "px";
+
+        galaxy.appendChild(star);
+
         const t =
-        (Math.PI * 2 * i) / 150;
+        (Math.PI*2*i)/200;
 
         const x =
-        16 * Math.pow(Math.sin(t),3);
+        16*Math.pow(Math.sin(t),3);
 
         const y =
         13*Math.cos(t)
@@ -302,30 +312,26 @@ function createGalaxyHeart(){
         -2*Math.cos(3*t)
         -Math.cos(4*t);
 
-        star.style.left =
-        (250 + x*12) + "px";
+        setTimeout(()=>{
 
-        star.style.top =
-        (220 - y*12) + "px";
+            star.style.left =
+            (250 + x*12) + "px";
 
-        galaxy.appendChild(star);
+            star.style.top =
+            (220 - y*12) + "px";
+
+        },100);
+
     }
-    const text =
-document.createElement("div");
 
-text.innerHTML =
-`
-<h1>از بین میلیاردها آدم...</h1>
-<h2>انتخاب من تو بودی ❤️</h2>
-`;
+    setTimeout(()=>{
 
-text.style.position = "absolute";
-text.style.top = "50%";
-text.style.left = "50%";
-text.style.transform = "translate(-50%,-50%)";
-text.style.color = "white";
-text.style.textAlign = "center";
-text.style.zIndex = "999";
+        bigHeart.style.display =
+        "flex";
 
-galaxy.appendChild(text);
+        loveText.style.display =
+        "block";
+
+    },3500);
+
 }
