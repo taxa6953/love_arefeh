@@ -257,3 +257,57 @@ function startHeartGame(){
     createCatchHeart();
 
 }
+function createCatchHeart(){
+
+    if(collectedHearts >= 10){
+
+        heartGame.style.display =
+        "none";
+
+        memories.style.display =
+        "flex";
+
+        currentCard = 0;
+
+        showNextMemory();
+
+        return;
+    }
+
+    const heart =
+    document.createElement("div");
+
+    heart.classList.add("catch-heart");
+
+    const img =
+    document.createElement("img");
+
+    img.src =
+    "../romantic-site/IMG_6026.png";
+
+    heart.appendChild(img);
+
+    heart.style.left =
+    Math.random() * (window.innerWidth - 80)
+    + "px";
+
+    heart.style.top =
+    Math.random() * (window.innerHeight - 80)
+    + "px";
+
+    document.body.appendChild(heart);
+
+    heart.addEventListener("click",()=>{
+
+        collectedHearts++;
+
+        scoreText.innerHTML =
+        collectedHearts + " / 10";
+
+        heart.remove();
+
+        createCatchHeart();
+
+    });
+
+}
