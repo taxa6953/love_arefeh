@@ -146,9 +146,20 @@ const cards =
 document.querySelectorAll(".memory-card");
 
 const loveScene =
+const loveScene =
 document.getElementById("loveScene");
 
+const bigHeart =
+document.getElementById("bigHeart");
+
+const loveText =
+document.getElementById("loveText");
+
+bigHeart.style.display = "none";
+loveText.style.display = "none";
+
 let currentCard = 0;
+
 const heartGame =
 document.getElementById("heartGame");
 
