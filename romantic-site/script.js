@@ -171,8 +171,6 @@ startBtn.addEventListener("click",()=>{
 
 startHeartGame();
 
-    showNextMemory();
-
 });
 
 // ===============================
@@ -198,21 +196,7 @@ function showNextMemory(){
             5000
         );
 
-    }else{
-
-        setTimeout(()=>{
-
-            memories.style.display =
-            "none";
-
-            loveScene.style.display =
-            "flex";
-
-        },5000);
-
-    }
-
-}
+    
 function startHeartGame(){
 
     collectedHearts = 0;
