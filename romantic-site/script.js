@@ -195,7 +195,8 @@ function showNextMemory(){
             showNextMemory,
             5000
         );
-
+    }
+}
     
 function startHeartGame(){
 
