@@ -280,7 +280,7 @@ function createGalaxyHeart(){
 
     const galaxy =
     document.getElementById("galaxyHeart");
-
+    galaxy.style.display = "block";
     galaxy.innerHTML = "";
 
     for(let i=0;i<150;i++){
@@ -310,4 +310,22 @@ function createGalaxyHeart(){
 
         galaxy.appendChild(star);
     }
+    const text =
+document.createElement("div");
+
+text.innerHTML =
+`
+<h1>از بین میلیاردها آدم...</h1>
+<h2>انتخاب من تو بودی ❤️</h2>
+`;
+
+text.style.position = "absolute";
+text.style.top = "50%";
+text.style.left = "50%";
+text.style.transform = "translate(-50%,-50%)";
+text.style.color = "white";
+text.style.textAlign = "center";
+text.style.zIndex = "999";
+
+galaxy.appendChild(text);
 }
