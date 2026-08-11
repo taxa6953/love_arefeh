@@ -569,3 +569,34 @@ body::before{
 
     object-fit:contain;
 }
+/* =========================
+   کهکشان عشق
+========================= */
+
+#galaxyHeart{
+
+    position:absolute;
+
+    width:500px;
+    height:450px;
+
+    pointer-events:none;
+}
+
+.galaxy-star{
+
+    position:absolute;
+
+    width:4px;
+    height:4px;
+
+    background:white;
+
+    border-radius:50%;
+
+    box-shadow:
+    0 0 10px white;
+
+    transition:
+    all 3s ease;
+}
