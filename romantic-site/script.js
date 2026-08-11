@@ -247,3 +247,13 @@ function showNextMemory(){
     }
 
 }
+function startHeartGame(){
+
+    collectedHearts = 0;
+
+    scoreText.innerHTML =
+    "0 / 10";
+
+    createCatchHeart();
+
+}
