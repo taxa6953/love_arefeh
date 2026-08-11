@@ -198,10 +198,6 @@ startBtn.addEventListener("click",()=>{
     "flex";
 
     startHeartGame();
-
-});
-    showNextMemory();
-
 });
 
 
