@@ -276,3 +276,38 @@ function createCatchHeart(){
     });
 
 }
+function createGalaxyHeart(){
+
+    const galaxy =
+    document.getElementById("galaxyHeart");
+
+    galaxy.innerHTML = "";
+
+    for(let i=0;i<150;i++){
+
+        const star =
+        document.createElement("div");
+
+        star.classList.add("galaxy-star");
+
+        const t =
+        (Math.PI * 2 * i) / 150;
+
+        const x =
+        16 * Math.pow(Math.sin(t),3);
+
+        const y =
+        13*Math.cos(t)
+        -5*Math.cos(2*t)
+        -2*Math.cos(3*t)
+        -Math.cos(4*t);
+
+        star.style.left =
+        (250 + x*12) + "px";
+
+        star.style.top =
+        (220 - y*12) + "px";
+
+        galaxy.appendChild(star);
+    }
+}
