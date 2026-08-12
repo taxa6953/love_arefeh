@@ -294,12 +294,15 @@ function createGalaxyHeart(){
     galaxy.style.display = "block";
     galaxy.innerHTML = "";
 
-    for(let i=0;i<200;i++){
+    for(let i=0;i<350;i++){
 
-        const star =
-        document.createElement("div");
+const star =
+document.createElement("img");
 
-        star.classList.add("galaxy-star");
+star.src =
+"../romantic-site/IMG_6026.png";
+
+star.classList.add("galaxy-star");
 
         // شروع از جای تصادفی
         star.style.left =
