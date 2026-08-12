@@ -593,16 +593,14 @@ body::before{
 
     position:absolute;
 
-    width:4px;
-    height:4px;
+    width:18px;
+    height:18px;
 
-    background:white;
-
-    border-radius:50%;
-
-    box-shadow:
-    0 0 10px white;
+    object-fit:contain;
 
     transition:
     all 3s ease;
+
+    filter:
+    drop-shadow(0 0 8px gold);
 }
