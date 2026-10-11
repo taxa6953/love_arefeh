@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ساخت targets.mind</title>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0829;color:#fff6fb;font-family:Vazirmatn,Tahoma,system-ui,sans-serif;padding:24px}
+  main{max-width:520px;width:100%;text-align:center;line-height:2}
+  h1{font-size:26px;margin:0 0 6px}
+  p{margin:6px 0;color:#dccff7}
+  .row{display:flex;gap:8px;justify-content:center;margin:16px 0}
+  .row img{width:20%;border-radius:8px;box-shadow:0 0 0 1px #fff6fb55}
+  button{font:inherit;font-weight:800;font-size:17px;border:0;border-radius:999px;padding:13px 34px;cursor:pointer;color:#1a0f40;background:linear-gradient(135deg,#fff6fb,#dccff7 55%,#ffd9ea)}
+  button[disabled]{opacity:.45;cursor:default}
+  .bar{height:6px;border-radius:6px;background:#ffffff22;overflow:hidden;margin:18px 0 6px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b49cff,#fff6fb);transition:width .3s}
+  #log{font-size:14px;min-height:2em}
+  .ok{color:#f7d9a0;font-weight:700}
+</style>
+</head>
+<body>
+<main>
+  <h1>ساخت فایل تارگت‌ها ✨</h1>
+  <p>این صفحه عکس چهار ستاره را برای دوربین «کامپایل» می‌کند. فقط یک‌بار لازم است، روی کامپیوتر.</p>
+  <div class="row" id="thumbs"></div>
+  <button id="go">شروع ساخت</button>
+  <div class="bar"><i id="bar"></i></div>
+  <p id="log"></p>
+  <p style="font-size:13px;opacity:.75">بعد از دانلود، فایل <b dir="ltr">targets.mind</b> را کنار <b dir="ltr">index.html</b> در گیت‌هاب آپلود کن.</p>
+</main>
+<script>
+// ترتیب باید دقیقاً همان ترتیب ستاره‌ها در index.html باشد
+const IMAGES = ["targets/t1_moon.jpg", "targets/t2_snow.jpg", "targets/t3_rose.jpg", "targets/t4_key.jpg"];
+const LIB = ["lib/mindar-image.prod.js", "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js", "https://unpkg.com/mind-ar@1.2.5/dist/mindar-image.prod.js"];
+const $ = (id) => document.getElementById(id);
+$("thumbs").innerHTML = IMAGES.map((s) => '<img src="' + s + '" alt="">').join("");
+
+function loadScript(urls) {
+  return new Promise((res, rej) => {
+    let i = 0;
+    (function next() {
+      if (i >= urls.length) return rej(new Error("کتابخانه بارگذاری نشد"));
+      const s = document.createElement("script");
+      s.src = urls[i++]; s.onload = res; s.onerror = () => { s.remove(); next(); };
+      document.head.appendChild(s);
+    })();
+  });
+}
+$("go").addEventListener("click", async () => {
+  $("go").disabled = true; $("log").textContent = "در حال بارگذاری…";
+  try {
+    await loadScript(LIB);
+    const imgs = await Promise.all(IMAGES.map((src) => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error("عکس پیدا نشد: " + src)); im.src = src; })));
+    const comp = new window.MINDAR.IMAGE.Compiler();
+    await comp.compileImageTargets(imgs, (p) => { $("bar").style.width = Math.min(p, 100) + "%"; $("log").textContent = "پیشرفت: " + Math.round(p) + "٪"; });
+    const data = await comp.exportData();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([data], { type: "application/octet-stream" }));
+    a.download = "targets.mind"; a.click();
+    $("log").innerHTML = '<span class="ok">تمام شد ✓ فایل targets.mind دانلود شد.</span>';
+  } catch (e) {
+    $("log").textContent = "خطا: " + e.message; $("go").disabled = false;
+  }
+});
+</script>
+</body>
+</html>

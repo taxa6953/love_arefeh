@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
+<meta name="theme-color" content="#08051c"/>
+<meta name="referrer" content="no-referrer"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>چهار ستاره‌ی پنهان</title>
+<style>
+:root{
+  --bg:#08051c; --ink:#fff6fb; --lav:#dccff7; --gold:#f7d9a0; --rose:#ffb7d5; --glass:rgba(16,10,48,.62);
+  --font:"Vazirmatn","Vazir","Shabnam","IRANSans","Noto Naskh Arabic","Noto Sans Arabic",Tahoma,system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--font);overflow:hidden;overscroll-behavior:none}
+button{font-family:inherit}
+#stage{position:fixed;inset:0;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,#2a1760 0%,#120a38 45%,#06041a 100%)}
+#stage a-scene{position:absolute;inset:0}
+
+/* ---------- screens ---------- */
+.screen{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 26px;
+  background:radial-gradient(120% 90% at 50% 0%,#2e1a6e 0%,#140b3e 48%,#06041a 100%);transition:opacity .7s ease,visibility .7s}
+.screen.hide{opacity:0;visibility:hidden;pointer-events:none}
+#sky{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.screen > *:not(canvas){position:relative;z-index:1}
+.eyebrow{font-size:12px;letter-spacing:.32em;color:var(--lav);opacity:.85;margin:0 0 14px;font-family:Inter,system-ui,sans-serif;text-transform:uppercase}
+h1{margin:0 0 10px;font-size:clamp(30px,9vw,44px);font-weight:800;line-height:1.35;text-shadow:0 0 22px rgba(190,160,255,.8)}
+.lead{margin:0 auto 22px;max-width:25em;font-size:16px;line-height:2.05;color:#efe6ff}
+.mini{margin:18px 0 0;font-size:12.5px;color:var(--lav);opacity:.8}
+.btn{appearance:none;border:0;cursor:pointer;color:#1a0f40;font-weight:800;font-size:18px;padding:15px 38px;border-radius:999px;
+  background:linear-gradient(135deg,#fff6fb,#dccff7 55%,#ffd9ea);box-shadow:0 0 0 1px #fff6fb inset,0 8px 34px rgba(170,130,255,.65);transition:transform .15s}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:0 0 0 1px rgba(255,246,251,.5) inset;font-size:14px;padding:11px 22px;font-weight:600}
+.link{margin-top:20px;background:none;border:0;color:var(--lav);opacity:.7;font-size:13px;text-decoration:underline;cursor:pointer}
+.ring{width:96px;height:96px;margin:0 auto 22px;position:relative}
+.ring svg{width:100%;height:100%;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bar{width:min(70vw,280px);height:4px;border-radius:4px;background:rgba(255,246,251,.18);overflow:hidden;margin:14px auto 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b49cff,#fff6fb);transition:width .3s}
+
+/* ---------- HUD ---------- */
+#hud{position:fixed;inset:0;z-index:20;pointer-events:none;opacity:0;transition:opacity .6s}
+#hud.on{opacity:1}
+#top{position:absolute;top:max(14px,env(safe-area-inset-top));left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px}
+#stars{display:flex;gap:14px;padding:9px 18px;border-radius:999px;background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 0 0 1px rgba(255,246,251,.22) inset}
+#stars svg{width:30px;height:30px;transition:transform .5s,filter .5s}
+#stars svg path{fill:rgba(255,246,251,.08);stroke:rgba(255,246,251,.55);stroke-width:1.4;transition:all .5s}
+#stars svg.on path{fill:var(--gold);stroke:#fff6fb}
+#stars svg.on{filter:drop-shadow(0 0 7px rgba(247,217,160,.95));transform:scale(1.18)}
+#hint{font-size:13.5px;color:#fff;background:var(--glass);padding:7px 15px;border-radius:999px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:opacity .5s}
+.tools{position:absolute;top:max(14px,env(safe-area-inset-top));inset-inline-start:14px;display:flex;gap:10px;pointer-events:auto}
+.tools button{width:40px;height:40px;border-radius:50%;border:0;background:var(--glass);color:#fff;font-size:18px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(255,246,251,.25) inset}
+#toast{position:absolute;top:28%;left:0;right:0;text-align:center;font-size:22px;font-weight:800;color:var(--gold);text-shadow:0 0 18px rgba(247,217,160,.9);opacity:0;transform:translateY(10px);transition:all .6s}
+#toast.on{opacity:1;transform:none}
+#card{position:absolute;left:12px;right:12px;bottom:max(14px,env(safe-area-inset-bottom));pointer-events:auto;padding:20px 20px 16px;border-radius:26px;
+  background:linear-gradient(180deg,rgba(40,24,98,.82),rgba(14,8,44,.9));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 0 0 1px rgba(255,246,251,.28) inset,0 10px 50px rgba(120,80,230,.55);transform:translateY(130%);opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .6s;max-width:560px;margin:0 auto}
+#card.on{transform:none;opacity:1}
+#card .no{font-family:Inter,system-ui,sans-serif;font-size:11px;letter-spacing:.3em;color:var(--lav);margin-bottom:4px;text-transform:uppercase}
+#card h2{margin:0 0 8px;font-size:21px;color:var(--gold);font-weight:800}
+#card p{margin:0;font-size:16.5px;line-height:2.1;color:#fff}
+#card p span{opacity:0;display:inline-block;transform:translateY(5px);animation:w .6s forwards}
+@keyframes w{to{opacity:1;transform:none}}
+#card .row{display:flex;gap:10px;margin-top:12px;justify-content:space-between;align-items:center}
+#card .x{position:absolute;top:8px;inset-inline-end:12px;background:none;border:0;color:var(--lav);font-size:22px;padding:6px}
+#next{display:none}
+#next.on{display:inline-block}
+
+/* ---------- finale ---------- */
+#finale canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.key{font-size:64px;filter:drop-shadow(0 0 22px rgba(247,217,160,.95));animation:fl 3s ease-in-out infinite;margin-bottom:6px}
+@keyframes fl{50%{transform:translateY(-10px) rotate(-6deg)}}
+#demoBox{position:fixed;left:8px;bottom:8px;z-index:60;display:none;gap:6px;background:rgba(0,0,0,.55);padding:6px;border-radius:12px;direction:ltr}
+#demoBox button{background:#fff6fb;border:0;border-radius:8px;padding:6px 10px;font-weight:700}
+</style>
+</head>
+<body>
+
+<div id="stage"></div>
+
+<!-- ============ intro ============ -->
+<section id="intro" class="screen">
+  <canvas id="sky"></canvas>
+  <div class="ring"><svg viewBox="0 0 100 100"><g fill="none" stroke="#fff6fb" stroke-width=".8" opacity=".85"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="38" stroke-dasharray="1 3"/></g>
+    <g fill="#fff6fb"><path d="M50 2 Q50 8 54 8 Q50 8 50 14 Q50 8 46 8 Q50 8 50 2Z"/><circle cx="50" cy="98" r="2"/><circle cx="2" cy="50" r="2"/><circle cx="98" cy="50" r="2"/></g>
+    <path d="M50 30 L55 45 L71 45 L58 54 L63 70 L50 60 L37 70 L42 54 L29 45 L45 45Z" fill="#f7d9a0" stroke="#fff6fb" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+  <p class="eyebrow">Eighteen</p>
+  <h1>چهار ستاره‌ی پنهان</h1>
+  <p class="lead">پوستر رو جلوی خودت بگیر و دوربین رو آروم روی هر ستاره‌ی تصویری ببر… هر کدوم یه راز کوچیک دارن، و آخرش یه در منتظرته.</p>
+  <button class="btn" id="startBtn">شروع کن ✨</button>
+  <p class="mini">🎧 صدا رو باز کن و یه جای نوردار بایست</p>
+  <button class="link" id="skipBtn">دوربین کار نمی‌کنه؟ برو مستقیم به صفحه‌ی تولد</button>
+</section>
+
+<!-- ============ loading ============ -->
+<section id="loading" class="screen hide">
+  <div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#fff6fb" stroke-width="1" stroke-dasharray="2 5"/><path d="M50 30 L55 45 L71 45 L58 54 L63 70 L50 60 L37 70 L42 54 L29 45 L45 45Z" fill="#f7d9a0"/></svg></div>
+  <h1 style="font-size:24px" id="loadTitle">در حال آماده‌سازی ستاره‌ها…</h1>
+  <p class="lead" id="loadSub" style="font-size:14px;margin-bottom:0">یه لحظه صبر کن</p>
+  <div class="bar"><i id="loadBar"></i></div>
+</section>
+
+<!-- ============ error ============ -->
+<section id="error" class="screen hide">
+  <h1 style="font-size:26px">وای، دوربین باز نشد 🥺</h1>
+  <p class="lead" id="errText" style="font-size:15px">اجازه‌ی دوربین رو بده و صفحه رو دوباره باز کن. اگه باز نشد، می‌تونی بدون دوربین بری سراغ هدیه.</p>
+  <button class="btn" id="errOpen">رفتن به صفحه‌ی تولد 💜</button>
+  <button class="link" id="errRetry">دوباره امتحان کن</button>
+</section>
+
+<!-- ============ HUD ============ -->
+<div id="hud">
+  <div id="top">
+    <div id="stars"></div>
+    <div id="hint">دوربین رو آروم روی یکی از ستاره‌ها نگه دار…</div>
+  </div>
+  <div class="tools"><button id="muteBtn" aria-label="صدا">🔊</button></div>
+  <div id="toast"></div>
+  <div id="card">
+    <button class="x" id="cardX" aria-label="بستن">×</button>
+    <div class="no" id="cNo"></div>
+    <h2 id="cTitle"></h2>
+    <p id="cText"></p>
+    <div class="row"><button class="btn ghost" id="again">🔁 دوباره بشنو</button><button class="btn ghost" id="next">دیدن پایان ✨</button></div>
+  </div>
+</div>
+
+<!-- ============ finale ============ -->
+<section id="finale" class="screen hide">
+  <canvas id="fx"></canvas>
+  <div class="key">🗝️</div>
+  <h1 id="fTitle"></h1>
+  <p class="lead" id="fText"></p>
+  <button class="btn" id="openBtn"></button>
+  <button class="link" id="replay">برگردم به ستاره‌ها</button>
+</section>
+
+<div id="demoBox"></div>
+
+<script>
+/* =====================================================================
+   تنظیمات — اینجا همه‌ی متن‌ها و فایل‌ها رو می‌تونی عوض کنی
+   ===================================================================== */
+const CONFIG = {
+  birthdayUrl: "https://taxa6953.github.io/love_arefeh/birthday/PAW_app/arefeh-18-bearthday.html",
+  dwellMs: 500,                 // دوربین باید این‌قدر روی ستاره ثابت بمونه
+  targetsFile: "targets.mind",  // فایل ساخته‌شده با compile.html (اگه نباشه، روی گوشی ساخته می‌شه)
+  // ترتیب ستاره‌ها باید با ترتیب تصاویر توی targets.mind یکی باشه
+  stars: [
+    { id: "moon", img: "targets/t1_moon.jpg", ratio: 1.0361, title: "شبی که آمدی",
+      text: "ماه همیشه همین‌جا بود، ولی از شبی که تو اومدی، آسمونِ من یه ستاره‌ی دیگه هم داره… ستاره‌ای که اسمش عارفه‌ست.",
+      audio: null, video: null },
+    { id: "snow", img: "targets/t2_snow.jpg", ratio: 1.0361, title: "دی‌ماهِ ما",
+      text: "هر برفی که می‌باره منو یاد تو میندازه؛ آروم میاد، همه‌چیز رو پاک و قشنگ می‌کنه. زمستون با اومدنِ تو مهربون‌تر شد.",
+      audio: null, video: null },
+    { id: "rose", img: "targets/t3_rose.jpg", ratio: 1.0361, title: "نرم‌ترین چیز",
+      text: "بعضی آدم‌ها مثل گل‌ان؛ بی‌صدا، دنیا رو خوشبو می‌کنن. تو برای من اون آدمی. هر بار که می‌خندی یه گل تو دلم باز می‌شه.",
+      audio: null, video: null },
+    { id: "key", img: "targets/t4_key.jpg", ratio: 1.0361, title: "کلید",
+      text: "این کلید مال توئه. دری رو که باهاش باز می‌شه فقط وقتی می‌بینی که هر چهار ستاره رو پیدا کرده باشی ✨",
+      audio: null, video: null }
+  ],
+  // audio / video رو با مسیر فایل خودت پر کن، مثلا:  audio: "media/moon.mp3"   یا   video: "media/moon.mp4"
+  finale: {
+    title: "هر چهار ستاره پیدا شد",
+    text: "حالا آسمونت کامله، عارفه‌ی من. یه در هست که منتظر توئه… بیا بازش کنیم. تولدت مبارک 💜",
+    button: "باز کردن در 🗝️"
+  },
+  libs: {
+    aframe: ["lib/aframe.min.js", "https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe.min.js", "https://unpkg.com/aframe@1.5.0/dist/aframe.min.js", "https://aframe.io/releases/1.5.0/aframe.min.js"],
+    mindAframe: ["lib/mindar-image-aframe.prod.js", "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js", "https://unpkg.com/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"],
+    mindCompile: ["lib/mindar-image.prod.js", "https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image.prod.js", "https://unpkg.com/mind-ar@1.2.5/dist/mindar-image.prod.js"]
+  }
+};
+
+/* =====================================================================
+   ابزارها
+   ===================================================================== */
+const $ = (id) => document.getElementById(id);
+const fa = (n) => Number(n).toLocaleString("fa-IR");
+const DEMO = /[?&]demo/.test(location.search);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const tryLS = (fn) => { try { return fn(); } catch (e) { return null; } };
+
+function loadScript(urls) {
+  return new Promise((resolve, reject) => {
+    let i = 0;
+    const next = () => {
+      if (i >= urls.length) return reject(new Error("could not load: " + urls[0]));
+      const s = document.createElement("script");
+      s.src = urls[i++];
+      s.onload = () => resolve();
+      s.onerror = () => { s.remove(); next(); };
+      document.head.appendChild(s);
+    };
+    next();
+  });
+}
+function showScreen(id) {
+  ["intro", "loading", "error", "finale"].forEach((s) => $(s).classList.toggle("hide", s !== id));
+}
+function hideScreens() { ["intro", "loading", "error", "finale"].forEach((s) => $(s).classList.add("hide")); }
+
+/* ---------- آسمان ستاره‌ای پشت صفحه‌ها ---------- */
+(function sky() {
+  const cv = $("sky"), cx = cv.getContext("2d");
+  let W, H, stars = [];
+  function size() {
+    const d = Math.min(devicePixelRatio || 1, 2);
+    W = cv.width = innerWidth * d; H = cv.height = innerHeight * d;
+    stars = Array.from({ length: 140 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: (Math.random() * 1.4 + .3) * d, p: Math.random() * 6.28, s: Math.random() * .02 + .005 }));
+  }
+  size(); addEventListener("resize", size);
+  (function loop(t) {
+    if (!cv.offsetParent) return requestAnimationFrame(loop);
+    cx.clearRect(0, 0, W, H);
+    for (const s of stars) {
+      const a = .35 + .65 * Math.abs(Math.sin(s.p + t * s.s * .1));
+      cx.globalAlpha = a; cx.fillStyle = "#fff6fb"; cx.beginPath(); cx.arc(s.x, s.y, s.r, 0, 6.283); cx.fill();
+    }
+    requestAnimationFrame(loop);
+  })(0);
+})();
+
+/* =====================================================================
+   موسیقی جعبه‌موزیکی (ساخته‌شده با Web Audio — بدون نیاز به فایل)
+   ===================================================================== */
+const Music = (() => {
+  const BPM = 76, BEAT = 60 / BPM;
+  const mtof = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  const CH = { D: [62, 66, 69, 74], Bm: [59, 62, 66, 71], G: [55, 59, 62, 67], A: [57, 61, 64, 69], Em: [52, 59, 64, 67] };
+  // هر قطعه: آکوردها، الگوی آرپژ، و ملودی [نت، ضرب، طول] برای هر میزان
+  const PHRASES = [
+    { chords: ["D", "Bm", "G", "A"], arp: [0, 1, 2, 3, 2, 1, 2, 1], lift: 12,
+      mel: [[[90, 0, 2], [88, 2, 1], [86, 3, 1]], [[83, 0, 2], [86, 2, 2]], [[83, 0, 1.5], [81, 1.5, .5], [79, 2, 2]], [[85, 0, 1], [88, 1, 1], [90, 2, 2]]] },
+    { chords: ["G", "D", "Em", "A"], arp: [3, 2, 1, 2, 3, 2, 1, 2], lift: 12,
+      mel: [[[91, 0, 1], [90, 1, 1], [86, 2, 2]], [[90, 0, 2], [86, 2, 1], [83, 3, 1]], [[88, 0, 2], [91, 2, 2]], [[90, 0, 1], [88, 1, 1], [85, 2, 2]]] },
+    { chords: ["Bm", "G", "D", "A"], arp: [0, 2, 1, 3, 1, 2, 1, 2], lift: 12,
+      mel: [[[86, 0, 3], [83, 3, 1]], [[86, 0, 2], [88, 2, 2]], [[90, 0, 3], [88, 3, 1]], [[85, 0, 2], [81, 2, 2]]] },
+    { chords: ["G", "A", "Bm", "D"], arp: [0, 1, 2, 3, 2, 3, 2, 1], lift: 12,
+      mel: [[[83, 0, 2], [86, 2, 2]], [[85, 0, 2], [88, 2, 2]], [[90, 0, 2], [86, 2, 2]], [[86, 0, 4]]] }
+  ];
+  let ctx = null, bus = null, muted = false;
+
+  function impulse(c, sec, decay) {
+    const len = Math.floor(c.sampleRate * sec), b = c.createBuffer(2, len, c.sampleRate);
+    for (let ch = 0; ch < 2; ch++) { const d = b.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, decay); }
+    return b;
+  }
+  function chain(c) {            // ساخت زنجیره‌ی صدا روی هر context (برای تست آفلاین هم استفاده می‌شه)
+    const m = c.createGain(); m.gain.value = .9;
+    const comp = c.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 3;
+    const d = c.createGain(); d.gain.value = .85;
+    const conv = c.createConvolver(); conv.buffer = impulse(c, 2.6, 2.4);
+    const w = c.createGain(); w.gain.value = .42;
+    d.connect(m); conv.connect(w); w.connect(m); m.connect(comp); comp.connect(c.destination);
+    return { master: m, dry: d, conv };
+  }
+  function bell(c, out, freq, t, dur, vel) {
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vel, t + .004);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    const parts = [[1, 1], [3, .22], [5.4, .07]];     // نت اصلی + هارمونیک‌های ظریف فلزی
+    const oscs = parts.map(([r, a]) => {
+      const o = c.createOscillator(), ga = c.createGain();
+      o.type = "sine"; o.frequency.value = freq * r; ga.gain.value = a;
+      o.connect(ga); ga.connect(g); o.start(t); o.stop(t + dur + .1); return o;
+    });
+    g.connect(out.dry); g.connect(out.conv);
+    return oscs;
+  }
+  function pad(c, out, midis, t, dur, vel) {     // پَد نرم برای پایان
+    const g = c.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vel, t + 1.6);
+    g.gain.linearRampToValueAtTime(vel * .8, t + dur - 2.5);
+    g.gain.linearRampToValueAtTime(.0001, t + dur);
+    midis.forEach((m, i) => {
+      const o = c.createOscillator(); o.type = "triangle"; o.frequency.value = mtof(m); o.detune.value = (i % 2 ? 6 : -6);
+      const lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1400;
+      o.connect(lp); lp.connect(g); o.start(t); o.stop(t + dur + .2);
+    });
+    g.connect(out.dry); g.connect(out.conv);
+  }
+  function schedule(c, out, idx, t0) {
+    const P = PHRASES[idx];
+    P.chords.forEach((name, bar) => {
+      const ch = CH[name], base = t0 + bar * 4 * BEAT;
+      bell(c, out, mtof(ch[0] - 12), base, 3.2, .13);                           // بیس
+      P.arp.forEach((ai, e) => bell(c, out, mtof(ch[ai] + P.lift), base + e * .5 * BEAT, 1.6, .075));
+      (P.mel[bar] || []).forEach(([m, b, d]) => bell(c, out, mtof(m), base + b * BEAT, 1.2 + d * BEAT, .17));
+    });
+    return t0 + 16 * BEAT;
+  }
+  function scheduleFinale(c, out, t0) {
+    const scale = [62, 64, 66, 69, 71, 74, 76, 78, 81, 83, 86, 88, 90, 93, 95];
+    scale.forEach((m, i) => bell(c, out, mtof(m), t0 + i * .16, 2.2, .1 + i * .004));
+    const t1 = t0 + scale.length * .16 + .1;
+    [50, 62, 66, 69, 74, 76, 81, 86].forEach((m, i) => bell(c, out, mtof(m), t1 + i * .05, 5.5, .15));
+    pad(c, out, [50, 57, 62, 66, 69, 74], t1, 9, .05);
+    for (let k = 0; k < 14; k++) bell(c, out, mtof([86, 88, 90, 93, 95, 98][k % 6]), t1 + 1.2 + k * .42, 1.8, .06);
+    return t1 + 9;
+  }
+  function ensure() {
+    if (ctx) return ctx;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    ctx = new AC();
+    bus = chain(ctx);
+    return ctx;
+  }
+  function voice() {                      // هر پخش، یک گروه صدای مستقل دارد تا بشود واقعاً قطعش کرد
+    const d = ctx.createGain(), s = ctx.createGain();
+    d.connect(bus.dry); s.connect(bus.conv);
+    return { dry: d, conv: s };
+  }
+  let cur = null;
+  function stop() {
+    if (!cur || !ctx) return;
+    const v = cur, now = ctx.currentTime; cur = null;
+    v.dry.gain.cancelScheduledValues(now); v.conv.gain.cancelScheduledValues(now);
+    v.dry.gain.setTargetAtTime(0, now, .06); v.conv.gain.setTargetAtTime(0, now, .06);
+    setTimeout(() => { try { v.dry.disconnect(); v.conv.disconnect(); } catch (e) {} }, 900);
+  }
+  return {
+    PHRASES, schedule, scheduleFinale, chain,
+    async unlock() {
+      const c = ensure(); if (!c) return;
+      try { if (c.state !== "running") await c.resume(); } catch (e) {}
+      const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource(); s.buffer = b; s.connect(c.destination); s.start(0);   // iOS
+    },
+    play(idx) {
+      const c = ensure(); if (!c || muted) return;
+      stop(); cur = voice();
+      schedule(c, cur, idx, c.currentTime + .42);
+    },
+    finale() {
+      const c = ensure(); if (!c || muted) return;
+      stop(); cur = voice();
+      scheduleFinale(c, cur, c.currentTime + .5);
+    },
+    stop,
+    setMuted(m) { muted = m; if (bus && ctx) bus.master.gain.setTargetAtTime(m ? 0 : .9, ctx.currentTime, .05); if (m) stop(); },
+    isMuted: () => muted,
+    // پخش فایل صوتی خود کاربر (mp3 / m4a) با Web Audio
+    async playFile(url) {
+      const c = ensure(); if (!c || muted) return;
+      stop(); const v = (cur = voice());
+      try {
+        const buf = await (await fetch(url)).arrayBuffer();
+        const ab = await new Promise((res, rej) => c.decodeAudioData(buf, res, rej));
+        if (cur !== v) return;            // بین این مدت ستاره‌ی دیگری فعال شده
+        const src = c.createBufferSource(); src.buffer = ab; src.connect(v.dry); src.start();
+      } catch (e) { console.warn("audio file failed", e); }
+    }
+  };
+})();
+
+/* =====================================================================
+   حالت بازی: ستاره‌ها، کارت پیام، پایان
+   ===================================================================== */
+const found = new Set();
+let current = -1, cardTimer = null, finaleShown = false, toastTimer = null;
+const videos = {};
+
+function buildStarsHud() {
+  const star = '<svg viewBox="0 0 40 40"><path d="M20 3 L25 15 L38 16 L28 25 L31 38 L20 31 L9 38 L12 25 L2 16 L15 15Z" stroke-linejoin="round"/></svg>';
+  $("stars").innerHTML = CONFIG.stars.map(() => star).join("");
+}
+function markStar(i) { $("stars").children[i].classList.add("on"); }
+function toast(msg) {
+  const t = $("toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("on"), 2200);
+}
+function hideCard() { $("card").classList.remove("on"); clearTimeout(cardTimer); }
+function showCard(i) {
+  const s = CONFIG.stars[i];
+  $("cNo").textContent = "star " + (i + 1) + " / " + CONFIG.stars.length;
+  $("cTitle").textContent = s.title;
+  const words = s.text.split(" ");
+  $("cText").innerHTML = words.map((w, k) => '<span style="animation-delay:' + (.5 + k * .11).toFixed(2) + 's">' + w + "&nbsp;</span>").join("");
+  const all = found.size === CONFIG.stars.length;
+  $("next").classList.toggle("on", all);
+  $("card").classList.add("on");
+  clearTimeout(cardTimer);
+  cardTimer = setTimeout(() => { if (!all) hideCard(); }, 9000 + words.length * 150);
+}
+function playStar(i) {
+  const s = CONFIG.stars[i];
+  if (s.audio) Music.playFile(s.audio); else Music.play(i);
+  const v = videos[i]; if (v) { v.currentTime = 0; v.play().catch(() => {}); }
+}
+function activate(i) {
+  if (current === i && $("card").classList.contains("on")) return;
+  current = i;
+  const first = !found.has(i);
+  found.add(i); markStar(i);
+  $("hint").style.opacity = 0;
+  showCard(i);
+  playStar(i);
+  if (navigator.vibrate) navigator.vibrate(first ? [30, 40, 30] : 15);
+  if (first) toast(found.size === CONFIG.stars.length ? "✨ آخرین ستاره هم پیدا شد!" : "ستاره‌ی " + fa(i + 1) + " پیدا شد ✨");
+  if (found.size === CONFIG.stars.length && first) {
+    clearTimeout(window.__finT);
+    window.__finT = setTimeout(openFinale, 17000);
+  }
+}
+function openFinale() {
+  if (finaleShown && !$("finale").classList.contains("hide")) return;
+  finaleShown = true; clearTimeout(window.__finT);
+  hideCard();
+  $("fTitle").textContent = CONFIG.finale.title;
+  $("fText").textContent = CONFIG.finale.text;
+  $("openBtn").textContent = CONFIG.finale.button;
+  showScreen("finale");
+  Music.finale();
+  Fireworks.start();
+}
+function goBirthday() { location.href = CONFIG.birthdayUrl; }
+
+/* ---------- آتش‌بازی ستاره‌ای در صفحه‌ی پایان ---------- */
+const Fireworks = (() => {
+  const cv = $("fx"), cx = cv.getContext("2d");
+  let W, H, ps = [], run = false, last = 0;
+  function size() { const d = Math.min(devicePixelRatio || 1, 2); W = cv.width = innerWidth * d; H = cv.height = innerHeight * d; }
+  function burst(x, y) {
+    const hue = [275, 320, 45, 200][Math.floor(Math.random() * 4)];
+    for (let i = 0; i < 46; i++) {
+      const a = Math.random() * 6.283, sp = (Math.random() * 3.4 + 1) * (devicePixelRatio || 1);
+      ps.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, r: (Math.random() * 2 + 1) * (devicePixelRatio || 1), hue, heart: Math.random() < .18 });
+    }
+  }
+  function loop(t) {
+    if (!run) return;
+    cx.fillStyle = "rgba(8,5,28,.22)"; cx.fillRect(0, 0, W, H);
+    if (t - last > 650) { burst(Math.random() * W, Math.random() * H * .6 + H * .08); last = t; }
+    ps = ps.filter((p) => p.life > 0);
+    for (const p of ps) {
+      p.x += p.vx; p.y += p.vy; p.vy += .028; p.vx *= .99; p.life -= .011;
+      cx.globalAlpha = Math.max(p.life, 0); cx.fillStyle = "hsl(" + p.hue + ",90%," + (60 + p.life * 25) + "%)";
+      if (p.heart) { cx.font = (p.r * 7) + "px sans-serif"; cx.fillText("♥", p.x, p.y); } else { cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 6.283); cx.fill(); }
+    }
+    cx.globalAlpha = 1;
+    requestAnimationFrame(loop);
+  }
+  return { start() { size(); run = true; ps = []; cx.clearRect(0, 0, W, H); requestAnimationFrame(loop); }, stop() { run = false; } };
+})();
+
+/* =====================================================================
+   واقعیت افزوده (MindAR + A-Frame)
+   ===================================================================== */
+function setLoad(title, sub, pct) {
+  if (title) $("loadTitle").textContent = title;
+  if (sub !== undefined) $("loadSub").textContent = sub;
+  if (pct !== undefined) $("loadBar").style.width = Math.round(pct * 100) + "%";
+}
+
+// کش کردن فایل ساخته‌شده روی گوشی (تا دفعه‌ی بعد دوباره ساخته نشه)
+const idb = {
+  open: () => new Promise((res, rej) => { const r = indexedDB.open("arefeh-ar", 1); r.onupgradeneeded = () => r.result.createObjectStore("kv"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }),
+  async get(k) { const db = await this.open(); return new Promise((res) => { const q = db.transaction("kv").objectStore("kv").get(k); q.onsuccess = () => res(q.result); q.onerror = () => res(null); }); },
+  async put(k, v) { const db = await this.open(); return new Promise((res) => { const tx = db.transaction("kv", "readwrite"); tx.objectStore("kv").put(v, k); tx.oncomplete = () => res(); tx.onerror = () => res(); }); }
+};
+
+async function resolveTargets() {
+  // ۱) فایل آماده
+  try {
+    const r = await fetch(CONFIG.targetsFile, { cache: "no-cache" });
+    if (r.ok && /octet|mind|binary|application/i.test(r.headers.get("content-type") || "application/octet-stream")) {
+      const buf = await r.arrayBuffer();
+      if (buf.byteLength > 2000) return URL.createObjectURL(new Blob([buf]));
+    }
+  } catch (e) {}
+  // ۲) کش گوشی
+  try { const cached = await idb.get("targets-v1"); if (cached) return URL.createObjectURL(new Blob([cached])); } catch (e) {}
+  // ۳) ساختن روی همین گوشی
+  setLoad("اولین بار طول می‌کشه ⏳", "دارم ستاره‌ها رو برای دوربین آماده می‌کنم. این فقط یک‌بار لازمه.", 0.02);
+  await loadScript(CONFIG.libs.mindCompile);
+  const Compiler = window.MINDAR && window.MINDAR.IMAGE && window.MINDAR.IMAGE.Compiler;
+  if (!Compiler) throw new Error("compiler missing");
+  const imgs = [];
+  for (const s of CONFIG.stars) {
+    await new Promise((res, rej) => { const im = new Image(); im.crossOrigin = "anonymous"; im.onload = () => { imgs.push(im); res(); }; im.onerror = rej; im.src = s.img; });
+  }
+  const comp = new Compiler();
+  await comp.compileImageTargets(imgs, (p) => setLoad(null, "پیشرفت: " + fa(Math.round(p)) + "٪", Math.min(p / 100, .99)));
+  const data = await comp.exportData();
+  tryLS(() => idb.put("targets-v1", data));
+  return URL.createObjectURL(new Blob([data]));
+}
+
+const GLOW_SVG = "data:image/svg+xml;utf8," + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 415"><defs><filter id="b"><feGaussianBlur stdDeviation="7"/></filter></defs>' +
+  '<rect x="10" y="10" width="380" height="395" rx="22" fill="none" stroke="#f7d9a0" stroke-width="14" filter="url(#b)"/>' +
+  '<rect x="10" y="10" width="380" height="395" rx="22" fill="none" stroke="#fff6fb" stroke-width="4"/>' +
+  '<g fill="#fff6fb"><path d="M200 0 Q200 14 214 14 Q200 14 200 28 Q200 14 186 14 Q200 14 200 0Z"/><path d="M200 387 Q200 401 214 401 Q200 401 200 415 Q200 401 186 401 Q200 401 200 387Z"/></g></svg>');
+
+let sceneEl = null, glowLoop = null;
+const lit = new Set();
+
+function buildScene(mindSrc) {
+  const stage = $("stage");
+  const targets = CONFIG.stars.map((s, i) =>
+    '<a-entity mindar-image-target="targetIndex: ' + i + '">' +
+      '<a-plane id="glow' + i + '" width="1.1" height="' + (1.1 * s.ratio).toFixed(3) + '" position="0 0 0.01" ' +
+        'material="shader: flat; src: #glowTex; transparent: true; opacity: 0; depthTest: false"></a-plane>' +
+      (s.video ? '<a-video id="av' + i + '" src="#vid' + i + '" width="1" height="' + s.ratio + '" position="0 0 0.02" visible="false"></a-video>' : "") +
+    "</a-entity>").join("");
+  stage.innerHTML =
+    '<a-scene mindar-image="imageTargetSrc: ' + mindSrc + '; maxTrack: 1; uiLoading: no; uiScanning: no; uiError: no; filterMinCF: 0.0008; filterBeta: 0.05" ' +
+      'color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" xr-mode-ui="enabled: false" ' +
+      'vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">' +
+      '<a-assets><img id="glowTex" src="' + GLOW_SVG + '"/></a-assets>' +
+      '<a-camera position="0 0 0" look-controls="enabled: false"></a-camera>' + targets +
+    "</a-scene>";
+  const scene = (sceneEl = stage.querySelector("a-scene"));
+  stage.querySelectorAll("[mindar-image-target]").forEach((t, i) => {
+    let dwell = null;
+    t.addEventListener("targetFound", () => {
+      clearTimeout(dwell);
+      dwell = setTimeout(() => { lit.add(i); const av = $("av" + i); if (av) av.setAttribute("visible", "true"); activate(i); }, CONFIG.dwellMs);
+    });
+    t.addEventListener("targetLost", () => {
+      clearTimeout(dwell); lit.delete(i);
+      const av = $("av" + i); if (av) av.setAttribute("visible", "false");
+      const v = videos[i]; if (v) v.pause();
+      const g = $("glow" + i); if (g) g.setAttribute("material", "opacity", 0);
+    });
+  });
+  scene.addEventListener("arReady", () => { hideScreens(); $("hud").classList.add("on"); });
+  scene.addEventListener("arError", () => showError("camera"));
+
+  cancelAnimationFrame(glowLoop);
+  (function pulse(t) {
+    lit.forEach((i) => { const g = $("glow" + i); if (g) g.setAttribute("material", "opacity", (0.55 + 0.4 * Math.sin(t / 380)).toFixed(2)); });
+    glowLoop = requestAnimationFrame(pulse);
+  })(0);
+}
+
+function showError(kind) {
+  $("errText").textContent = kind === "camera"
+    ? "اجازه‌ی دوربین رو بده (آیکون قفل کنار آدرس) و دوباره امتحان کن. اگه باز نشد، می‌تونی بدون دوربین بری سراغ هدیه."
+    : "ظاهراً اینترنت یا یکی از فایل‌ها مشکل داره. یه بار دیگه امتحان کن، یا مستقیم برو سراغ هدیه.";
+  showScreen("error");
+}
+
+async function startAR() {
+  showScreen("loading"); setLoad("در حال آماده‌سازی ستاره‌ها…", "یه لحظه صبر کن", 0.05);
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw Object.assign(new Error("no camera api"), { kind: "camera" });
+    const src = await resolveTargets();
+    setLoad("دارم دوربین رو روشن می‌کنم…", "اگه اجازه خواست، «اجازه بده» رو بزن", .9);
+    await loadScript(CONFIG.libs.aframe);
+    await loadScript(CONFIG.libs.mindAframe);
+    buildScene(src);
+    // اگه دوربین تا ۴۵ ثانیه آماده نشد، خطا بده
+    setTimeout(() => { if (!$("hud").classList.contains("on") && $("loading").classList.contains("hide") === false) showError("load"); }, 45000);
+  } catch (e) {
+    console.error(e);
+    showError(e.kind || "load");
+  }
+}
+
+/* =====================================================================
+   رویدادها
+   ===================================================================== */
+buildStarsHud();
+CONFIG.stars.forEach((st, i) => {
+  if (!st.video) return;
+  const v = document.createElement("video");
+  v.id = "vid" + i; v.src = st.video; v.loop = true; v.preload = "auto"; v.crossOrigin = "anonymous";
+  v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", "");
+  v.style.cssText = "position:fixed;width:2px;height:2px;opacity:0;pointer-events:none;left:0;top:0";
+  document.body.appendChild(v); videos[i] = v;
+});
+$("startBtn").addEventListener("click", async () => {
+  Object.values(videos).forEach((v) => { v.muted = false; v.play().then(() => v.pause()).catch(() => {}); });
+  await Music.unlock();
+  if (DEMO) { hideScreens(); $("hud").classList.add("on"); return; }
+  startAR();
+});
+$("skipBtn").addEventListener("click", goBirthday);
+$("errOpen").addEventListener("click", goBirthday);
+$("errRetry").addEventListener("click", () => location.reload());
+$("openBtn").addEventListener("click", goBirthday);
+$("replay").addEventListener("click", () => { Fireworks.stop(); Music.stop(); hideScreens(); });
+$("cardX").addEventListener("click", hideCard);
+$("again").addEventListener("click", () => { if (current >= 0) playStar(current); });
+$("next").addEventListener("click", openFinale);
+$("muteBtn").addEventListener("click", () => { const m = !Music.isMuted(); Music.setMuted(m); $("muteBtn").textContent = m ? "🔇" : "🔊"; });
+document.addEventListener("visibilitychange", () => { if (document.hidden) Music.stop(); });
+
+// حالت پیش‌نمایش بدون دوربین:  index.html?demo
+if (DEMO) {
+  const box = $("demoBox"); box.style.display = "flex";
+  box.innerHTML = CONFIG.stars.map((s, i) => '<button data-i="' + i + '">' + (i + 1) + "</button>").join("") + '<button data-i="fin">end</button>';
+  box.addEventListener("click", (e) => {
+    const k = e.target.dataset && e.target.dataset.i; if (k === undefined) return;
+    Music.unlock(); if (k === "fin") { found.clear(); CONFIG.stars.forEach((_, i) => { found.add(i); markStar(i); }); openFinale(); } else activate(+k);
+  });
+}
+window.__app = { activate, openFinale, found, Music, CONFIG };   // برای تست
+</script>
+</body>
+</html>
